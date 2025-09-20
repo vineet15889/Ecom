@@ -16,7 +16,7 @@ class SummerViewModel: ObservableObject {
     
     private let repository: WardrobeRepositoryProtocol
     
-    init(repository: WardrobeRepositoryProtocol = WardrobeRepository.shared) {
+    init(repository: WardrobeRepositoryProtocol = WardrobeRepository()) {
         self.repository = repository
     }
     
@@ -24,10 +24,15 @@ class SummerViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
         
-        // network delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.wardrobeItems = self.repository.getWardrobeItems(for: "Summer")
-            self.isLoading = false
+        Task {
+            do {
+                let items = try await repository.fetchWardrobeItemsFromAPI()
+                self.wardrobeItems = items
+                self.isLoading = false
+            } catch {
+                self.errorMessage = error.localizedDescription
+                self.isLoading = false
+            }
         }
     }
     

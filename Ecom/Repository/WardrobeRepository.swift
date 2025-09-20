@@ -10,12 +10,11 @@ import Foundation
 protocol WardrobeRepositoryProtocol {
     func getWardrobeCategories() -> [WardrobeCategory]
     func getWardrobeItems(for category: String) -> [WardrobeItem]
+    func fetchWardrobeItemsFromAPI() async throws -> [WardrobeItem]
 }
 
 class WardrobeRepository: WardrobeRepositoryProtocol {
-    static let shared = WardrobeRepository()
-    
-    private init() {}
+    private let apiService = APIService.shared
     
     func getWardrobeCategories() -> [WardrobeCategory] {
         return [
@@ -135,5 +134,9 @@ class WardrobeRepository: WardrobeRepositoryProtocol {
                 category: "Casual"
             )
         ]
+    }
+    
+    func fetchWardrobeItemsFromAPI() async throws -> [WardrobeItem] {
+        return try await apiService.fetchWardrobeItems()
     }
 }

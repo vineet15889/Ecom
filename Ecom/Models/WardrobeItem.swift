@@ -14,7 +14,18 @@ struct WardrobeItem: Identifiable, Codable {
     let price: Double
     let rating: Double
     let imageName: String
+    let imageURL: String?
     let category: String
+    
+    init(title: String, brand: String, price: Double, rating: Double, imageName: String, imageURL: String? = nil, category: String) {
+        self.title = title
+        self.brand = brand
+        self.price = price
+        self.rating = rating
+        self.imageName = imageName
+        self.imageURL = imageURL
+        self.category = category
+    }
 }
 
 struct WardrobeCategory: Identifiable, Codable {

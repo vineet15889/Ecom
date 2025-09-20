@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ReusableImageView: View {
     let imageName: String
+    let imageURL: String?
     let width: CGFloat
     let height: CGFloat
     let cornerRadius: CGFloat
@@ -16,12 +17,14 @@ struct ReusableImageView: View {
     
     init(
         imageName: String,
+        imageURL: String? = nil,
         width: CGFloat = 80,
         height: CGFloat = 80,
         cornerRadius: CGFloat = 8,
         contentMode: ContentMode = .fill
     ) {
         self.imageName = imageName
+        self.imageURL = imageURL
         self.width = width
         self.height = height
         self.cornerRadius = cornerRadius
@@ -29,12 +32,22 @@ struct ReusableImageView: View {
     }
     
     var body: some View {
-        Image(imageName)
-            .resizable()
-            .aspectRatio(contentMode: contentMode)
-            .frame(width: width, height: height)
-            .clipped()
-            .cornerRadius(cornerRadius)
+        Group {
+            if let imageURL = imageURL, !imageURL.isEmpty {
+                CachedAsyncImage(urlString: imageURL)
+                    .aspectRatio(contentMode: contentMode)
+                    .frame(width: width, height: height)
+                    .clipped()
+                    .cornerRadius(cornerRadius)
+            } else {
+                Image(imageName)
+                    .resizable()
+                    .aspectRatio(contentMode: contentMode)
+                    .frame(width: width, height: height)
+                    .clipped()
+                    .cornerRadius(cornerRadius)
+            }
+        }
     }
 }
 

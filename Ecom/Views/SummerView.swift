@@ -80,6 +80,8 @@ struct SummerView: View {
         VStack(spacing: 0) {
             if viewModel.isLoading {
                 loadingView
+            } else if let errorMessage = viewModel.errorMessage {
+                errorView(errorMessage)
             } else {
                 wardrobeItemsList
             }
@@ -100,8 +102,31 @@ struct SummerView: View {
         }
     }
     
+    private func errorView(_ message: String) -> some View {
+        VStack {
+            Spacer()
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 50))
+                .foregroundColor(.red)
+            Text("Error")
+                .font(.title2)
+                .fontWeight(.bold)
+                .padding(.top, 10)
+            Text(message)
+                .font(.body)
+                .foregroundColor(.gray)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 20)
+            Button("Retry") {
+                viewModel.loadSummerItems()
+            }
+            .padding(.top, 20)
+            Spacer()
+        }
+    }
+    
     private var wardrobeItemsList: some View {
-        ScrollView {
+        ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(spacing: 20) {
                 ForEach(viewModel.wardrobeItems) { item in
                     WardrobeItemCard(item: item) {
@@ -113,6 +138,7 @@ struct SummerView: View {
             .padding(.top, 20)
             .padding(.bottom, 20)
         }
+        .scrollContentBackground(.hidden)
     }
     
     private var bottomNavigationView: some View {
@@ -198,6 +224,7 @@ struct WardrobeItemCard: View {
             
             ReusableImageView(
                 imageName: item.imageName,
+                imageURL: item.imageURL,
                 width: 100,
                 height: 115,
                 cornerRadius: 8
