@@ -9,3 +9,7 @@ A e-commerce application built with SwiftUI, featuring a beautiful Summer wardro
 - **Protocol-Based Design** - Testable and maintainable code
 
 <img width="452" height="682" alt="Screenshot 2025-09-20 at 3 08 06 PM" src="https://github.com/user-attachments/assets/e9fa6806-d074-45b3-b15c-c40dbb29a0c6" />
+
+
+https://github.com/user-attachments/assets/a4d23af1-6598-40f3-a838-ce7358e48acb
+
